@@ -1,0 +1,21 @@
+
+CREATE TABLE quotes	 (
+  quote_id INT PRIMARY KEY AUTO_INCREMENT,
+  quote VARCHAR(300) DEFAULT NULL,
+  author VARCHAR(40) DEFAULT NULL
+);
+
+CREATE TABLE comments (
+  comment_id INT PRIMARY KEY AUTO_INCREMENT,
+  quote_id INT DEFAULT NULL,
+  comment VARCHAR(300) DEFAULT NULL,
+  
+  KEY `FK_QUOTE_ID_idx` (`quote_id`),
+  
+  CONSTRAINT `FK_QUOTE_ID`
+  FOREIGN KEY(`quote_id`)
+  REFERENCES `quotes` (`quote_id`)
+  
+  ON DELETE NO ACTION ON UPDATE NO ACTION
+);
+
