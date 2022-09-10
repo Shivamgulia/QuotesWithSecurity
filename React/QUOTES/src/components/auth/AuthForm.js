@@ -7,6 +7,7 @@ import classes from './AuthForm.module.css';
 const AuthForm = () => {
   const history = useHistory();
 
+  const [showPassword, setShowPassword] = useState(false);
   const authCtx = useContext(AuthContext);
 
   const emailInputRef = useRef();
@@ -18,6 +19,12 @@ const AuthForm = () => {
   // const switchAuthModeHandler = () => {
   //   setIsLogin((prevState) => !prevState);
   // };
+
+  const toggleShowPassword = () => {
+    if (showPassword) setShowPassword(false);
+    if (!showPassword) setShowPassword(true);
+  };
+
   const submitionHandler = (event) => {
     event.preventDefault();
 
@@ -61,7 +68,7 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        const experationTime = new Date(new Date().getTime() + +36000);
+        const experationTime = new Date(new Date().getTime() + +36000000);
         authCtx.login(data.token, experationTime.toISOString());
         history.replace('/');
       })
@@ -82,12 +89,13 @@ const AuthForm = () => {
         <div className={classes.control}>
           <label htmlFor="password">Your Password</label>
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             id="password"
             required
             ref={passwordInputRef}
           />
         </div>
+        <input type="checkbox" onClick={toggleShowPassword} /> Show Password
         <div className={classes.actions}>
           {!isLoading && (
             // <button>{isLogin ? 'Login' : 'Create Account'}</button>

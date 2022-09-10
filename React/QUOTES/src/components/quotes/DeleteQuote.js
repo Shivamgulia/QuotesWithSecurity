@@ -1,12 +1,11 @@
 import { useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 const DeleteQuote = async (props) => {
-  const authCtx = useContext(AuthContext);
-  const responce = await fetch(`http://localhost:8080/quotes/${props}`, {
+  const responce = await fetch(`http://localhost:8080/quotes/${props.id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${authCtx.token}`,
+      Authorization: `Bearer ${props.token}`,
     },
   });
 
