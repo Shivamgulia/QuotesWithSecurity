@@ -5,8 +5,10 @@ import LoadingSpinner from '../UI/LoadingSpinner';
 import useHttp from '../hooks/use-http';
 import { addComment } from '../lib/api';
 import AuthContext from '../../store/auth-context';
+import { useHistory } from 'react-router-dom';
 
 const NewCommentForm = (props) => {
+  const history = useHistory();
   const authCtx = useContext(AuthContext);
   const commentTextRef = useRef();
   const { sendRequest, status, error } = useHttp(addComment);
@@ -30,6 +32,7 @@ const NewCommentForm = (props) => {
         quote_id: props.quoteId,
       },
     });
+    history.go(0);
   };
 
   return (

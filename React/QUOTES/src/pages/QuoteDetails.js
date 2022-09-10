@@ -59,7 +59,7 @@ const QuoteDetails = (props) => {
   const deletionHandler = () => {
     // console.log('delete ' + loadedQuote.id);
     setIsLoading(true);
-    DeleteQuote(loadedQuote.id);
+    DeleteQuote({ id: loadedQuote.id, token: authCtx.token });
     setIsLoading(false);
     history.push('/new-quote');
   };

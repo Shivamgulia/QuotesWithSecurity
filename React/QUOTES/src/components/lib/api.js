@@ -5,10 +5,14 @@
 
 export async function getAllQuotes(props) {
   // const authCtx = useContext(AuthContext);
+  console.log({
+    'Content-Type': 'application/json',
+    Authorization: 'Bearer ' + props,
+  });
   const response = await fetch('http://localhost:8080/quotes', {
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${props}`,
+      Authorization: 'Bearer ' + props,
     },
   });
   const data = await response.json();
@@ -90,15 +94,18 @@ export async function addQuote(props) {
 // }
 
 export async function addComment(props) {
+  console.log('fuck');
+  console.log(`Bearer ${props.token}`);
   const response = await fetch('http://localhost:8080/comments', {
     method: 'POST',
-    body: JSON.stringify(props.requestData.commentData),
+    body: JSON.stringify(props.commentData),
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
     },
   });
   const data = await response.json();
+  console.log(response);
 
   if (!response.ok) {
     throw new Error(data.message || 'Could not add comment.');

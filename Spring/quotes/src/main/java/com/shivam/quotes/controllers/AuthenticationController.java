@@ -26,7 +26,7 @@ import com.shivam.quotes.responses.UserInfo;
 
 @RestController
 @RequestMapping("/api/v1")
-@CrossOrigin
+@CrossOrigin(origins = "*", allowedHeaders ="*")
 public class AuthenticationController {
 
 	@Autowired

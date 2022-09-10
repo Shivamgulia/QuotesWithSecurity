@@ -18,8 +18,8 @@ const AllQuotes = () => {
   } = useHttp(getAllQuotes, true);
 
   useEffect(() => {
-    sendRequest();
-  }, [sendRequest]);
+    sendRequest(authCtx.token);
+  }, [sendRequest, authCtx.token]);
   // console.log(loadedQuotes);
 
   useCallback(() => {
