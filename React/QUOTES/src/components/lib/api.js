@@ -88,8 +88,7 @@ export async function addQuote(props) {
 // }
 
 export async function addComment(props) {
-  console.log('fuck');
-  console.log(`Bearer ${props.token}`);
+  // console.log(`Bearer ${props.token}`);
   const response = await fetch('http://localhost:8080/comments', {
     method: 'POST',
     body: JSON.stringify(props.commentData),

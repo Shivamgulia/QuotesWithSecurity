@@ -1,4 +1,4 @@
-package com.shivam.quotes;
+package com.shivam.quoteswithsecurity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
