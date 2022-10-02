@@ -1,14 +1,8 @@
-// import { useContext } from 'react';
-// import AuthContext from '../../store/auth-context';
-
-// const FIREBASE_DOMAIN = 'https://quotes-33a21-default-rtdb.firebaseio.com';
-
 export async function getAllQuotes(props) {
-  // const authCtx = useContext(AuthContext);
-  console.log({
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + props,
-  });
+  // console.log({
+  //   'Content-Type': 'application/json',
+  //   Authorization: 'Bearer ' + props,
+  // });
   const response = await fetch('http://localhost:8080/quotes', {
     headers: {
       'Content-Type': 'application/json',

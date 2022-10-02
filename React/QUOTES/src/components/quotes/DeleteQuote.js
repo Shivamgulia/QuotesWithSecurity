@@ -1,5 +1,5 @@
-import { useContext } from 'react';
-import AuthContext from '../../store/auth-context';
+// import { useContext } from 'react';
+// import AuthContext from '../../store/auth-context';
 const DeleteQuote = async (props) => {
   const responce = await fetch(`http://localhost:8080/quotes/${props.id}`, {
     method: 'DELETE',

@@ -9,22 +9,27 @@ const MainNavigation = () => {
   const logoutHandler = () => {
     authCtx.logout();
   };
+  const loggedin = authCtx.isLoggedIn;
   return (
     <header className={classes.header}>
       <div className={classes.logo}>Great Quote</div>
       <nav className={classes.nav}>
         <ul>
-          <li>
-            <NavLink to="/quotes" activeClassName={classes.active}>
-              All Quotes
-            </NavLink>
-          </li>
-          <li>
-            <NavLink to="/new-quote" activeClassName={classes.active}>
-              Add Quote
-            </NavLink>
-          </li>
-          {authCtx.isLoggedIn && (
+          {loggedin && (
+            <li>
+              <NavLink to="/quotes" activeClassName={classes.active}>
+                All Quotes
+              </NavLink>
+            </li>
+          )}
+          {loggedin && (
+            <li>
+              <NavLink to="/new-quote" activeClassName={classes.active}>
+                Add Quote
+              </NavLink>
+            </li>
+          )}
+          {loggedin && (
             <li>
               <NavLink
                 to="/new-quote"
