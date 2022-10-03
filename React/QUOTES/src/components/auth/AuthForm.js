@@ -39,7 +39,8 @@ const AuthForm = () => {
       const enteredLName = lnameRef.current.value;
       const hashPassword = bcrypt.hashSync(enteredPassword, 10);
 
-      url = 'http://localhost:8080/v1/signup';
+      url =
+        'http"//ec2-13-233-232-148.ap-south-1.compute.amazonaws.com:8080/v1/signup';
       const user = {
         firstName: enteredFName,
         lastName: enteredLName,
@@ -65,7 +66,8 @@ const AuthForm = () => {
 
     setIsLoading(true);
 
-    url = 'http://localhost:8080/api/v1/auth/login'; //login send req url
+    url =
+      'http://ec2-13-233-232-148.ap-south-1.compute.amazonaws.com:8080/api/v1/auth/login'; //login send req url
     fetch(url, {
       method: 'POST',
       body: JSON.stringify({
