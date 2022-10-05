@@ -1,15 +1,11 @@
-// import { useContext } from 'react';
-// import AuthContext from '../../store/auth-context';
-
-// const FIREBASE_DOMAIN = 'https://quotes-33a21-default-rtdb.firebaseio.com';
+const url = 'http://ec2-13-233-232-148.ap-south-1.compute.amazonaws.com:8080/';
 
 export async function getAllQuotes(props) {
-  // const authCtx = useContext(AuthContext);
-  console.log({
-    'Content-Type': 'application/json',
-    Authorization: 'Bearer ' + props,
-  });
-  const response = await fetch('http://localhost:8080/quotes', {
+  // console.log({
+  //   'Content-Type': 'application/json',
+  //   Authorization: 'Bearer ' + props,
+  // });
+  const response = await fetch(url + 'quotes', {
     headers: {
       'Content-Type': 'application/json',
       Authorization: 'Bearer ' + props,
@@ -37,7 +33,7 @@ export async function getAllQuotes(props) {
 }
 
 export async function getSingleQuote(props) {
-  const response = await fetch(`http://localhost:8080/quotes/${props.id}`, {
+  const response = await fetch(`${url}quotes/${props.id}`, {
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${props.token}`,
@@ -58,7 +54,7 @@ export async function getSingleQuote(props) {
 }
 
 export async function addQuote(props) {
-  const response = await fetch('http://localhost:8080/quotes/', {
+  const response = await fetch(url + 'quotes/', {
     method: 'POST',
     body: JSON.stringify(props.quoteData),
     headers: {
@@ -94,9 +90,7 @@ export async function addQuote(props) {
 // }
 
 export async function addComment(props) {
-  console.log('fuck');
-  console.log(`Bearer ${props.token}`);
-  const response = await fetch('http://localhost:8080/comments', {
+  const response = await fetch(url + 'comments', {
     method: 'POST',
     body: JSON.stringify(props.commentData),
     headers: {
@@ -113,26 +107,3 @@ export async function addComment(props) {
 
   return { commentId: data.name };
 }
-
-// export async function getAllComments(quoteId) {
-//   const response = await fetch(`${FIREBASE_DOMAIN}/comments/${quoteId}.json`);
-
-//   const data = await response.json();
-
-//   if (!response.ok) {
-//     throw new Error(data.message || 'Could not get comments.');
-//   }
-
-//   const transformedComments = [];
-
-//   for (const key in data) {
-//     const commentObj = {
-//       id: key,
-//       ...data[key],
-//     };
-
-//     transformedComments.push(commentObj);
-//   }
-
-//   return transformedComments;
-// }

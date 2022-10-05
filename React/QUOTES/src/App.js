@@ -25,13 +25,13 @@ function App() {
         }
       >
         <Switch>
-          <Route path="/auth">
-            {loggedIn && <Redirect to="/quotes" />}
-            {!loggedIn && <AuthPage />}
-          </Route>
           <Route path="/" exact>
             {loggedIn && <Redirect to="/quotes" />}
             {!loggedIn && <Redirect to="/auth" />}
+          </Route>
+          <Route path="/auth">
+            {loggedIn && <Redirect to="/quotes" />}
+            {!loggedIn && <AuthPage />}
           </Route>
           <Route path="/quotes/:quoteId">
             {loggedIn && <QuoteDetails />}
