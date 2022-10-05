@@ -1,5 +1,4 @@
-import { Fragment, useContext } from 'react';
-import { useEffect, useCallback } from 'react/cjs/react.development';
+import { Fragment, useContext, useEffect, useCallback } from 'react';
 
 import QuoteList from '../components/quotes/QuoteList';
 import LoadingSpinner from '../components/UI/LoadingSpinner';
@@ -20,7 +19,6 @@ const AllQuotes = () => {
   useEffect(() => {
     sendRequest(authCtx.token);
   }, [sendRequest, authCtx.token]);
-  // console.log(loadedQuotes);
 
   useCallback(() => {
     sendRequest(authCtx.token);

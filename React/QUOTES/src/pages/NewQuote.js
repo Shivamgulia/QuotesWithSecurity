@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import react, { useContext, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import QuoteForm from '../components/quotes/QuoteForm';

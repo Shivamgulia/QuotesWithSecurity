@@ -1,6 +1,7 @@
 import { useState, useRef, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import bcrypt from 'bcryptjs';
+import Recaptcha from 'react-recaptcha';
 
 import AuthContext from '../../store/auth-context';
 import classes from './AuthForm.module.css';
@@ -9,6 +10,7 @@ const AuthForm = () => {
   const history = useHistory();
 
   const [showPassword, setShowPassword] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const authCtx = useContext(AuthContext);
 
   const emailInputRef = useRef();
@@ -28,84 +30,94 @@ const AuthForm = () => {
     if (!showPassword) setShowPassword(true);
   };
 
+  const verifyCallback = () => {
+    setIsVerified(true);
+  };
+  const load = () => {
+    setIsVerified(false);
+  };
+
   async function submitionHandler(event) {
     event.preventDefault();
+    if (isVerified) {
+      const enteredEmail = emailInputRef.current.value;
+      const enteredPassword = passwordInputRef.current.value;
+      let url;
+      if (!isLogin) {
+        const enteredFName = fnameRef.current.value;
+        const enteredLName = lnameRef.current.value;
+        const hashPassword = bcrypt.hashSync(enteredPassword, 10);
 
-    const enteredEmail = emailInputRef.current.value;
-    const enteredPassword = passwordInputRef.current.value;
-    let url;
-    if (!isLogin) {
-      const enteredFName = fnameRef.current.value;
-      const enteredLName = lnameRef.current.value;
-      const hashPassword = bcrypt.hashSync(enteredPassword, 10);
+        url =
+          'http://ec2-13-233-232-148.ap-south-1.compute.amazonaws.com:8080/v1/signup';
+        const user = {
+          firstName: enteredFName,
+          lastName: enteredLName,
+          userName: enteredEmail,
+          password: hashPassword,
+          roles: [5],
+        };
+        // console.log(user);
+        const response = await fetch(url, {
+          method: 'POST',
+          body: JSON.stringify(user),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+        const data = await response.json();
+        // console.log(response);
+
+        if (!response.ok) {
+          throw new Error(data.message || 'Could not add comment.');
+        }
+      }
+
+      setIsLoading(true);
 
       url =
-        'http"//ec2-13-233-232-148.ap-south-1.compute.amazonaws.com:8080/v1/signup';
-      const user = {
-        firstName: enteredFName,
-        lastName: enteredLName,
-        userName: enteredEmail,
-        password: hashPassword,
-        roles: [5],
-      };
-      // console.log(user);
-      const response = await fetch(url, {
+        'http://ec2-13-233-232-148.ap-south-1.compute.amazonaws.com:8080/api/v1/auth/login'; //login send req url
+      fetch(url, {
         method: 'POST',
-        body: JSON.stringify(user),
+        body: JSON.stringify({
+          userName: enteredEmail,
+          password: enteredPassword,
+        }),
         headers: {
           'Content-Type': 'application/json',
         },
-      });
-      const data = await response.json();
-      // console.log(response);
-
-      if (!response.ok) {
-        throw new Error(data.message || 'Could not add comment.');
-      }
+      })
+        .then((res) => {
+          setIsLoading(false);
+          if (res.ok) {
+            return res.json();
+          } else {
+            return res.json().then((data) => {
+              let errorMessage = 'Authentication Failed';
+              if (data && data.error && data.error.message) {
+                errorMessage = data.error.message;
+              }
+              throw new Error(errorMessage);
+            });
+          }
+        })
+        .then((data) => {
+          const experationTime = new Date(new Date().getTime() + +36000000);
+          authCtx.login(data.token, experationTime.toISOString());
+          history.replace('/');
+        })
+        .catch((err) => {
+          alert(err.message);
+        });
+    } else {
+      alert('Verify that you are not a robot');
     }
-
-    setIsLoading(true);
-
-    url =
-      'http://ec2-13-233-232-148.ap-south-1.compute.amazonaws.com:8080/api/v1/auth/login'; //login send req url
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify({
-        userName: enteredEmail,
-        password: enteredPassword,
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then((res) => {
-        setIsLoading(false);
-        if (res.ok) {
-          return res.json();
-        } else {
-          return res.json().then((data) => {
-            let errorMessage = 'Authentication Failed';
-            if (data && data.error && data.error.message) {
-              errorMessage = data.error.message;
-            }
-            throw new Error(errorMessage);
-          });
-        }
-      })
-      .then((data) => {
-        const experationTime = new Date(new Date().getTime() + +36000000);
-        authCtx.login(data.token, experationTime.toISOString());
-        history.replace('/');
-      })
-      .catch((err) => {
-        alert(err.message);
-      });
   }
 
   return (
     <section className={classes.auth}>
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
-      {/* <h1>Login</h1> */}
+
       <form onSubmit={submitionHandler}>
         {!isLogin && (
           <div className={classes.control}>
@@ -134,6 +146,15 @@ const AuthForm = () => {
         </div>
         <input type="checkbox" onClick={toggleShowPassword} /> Show Password
         <div className={classes.actions}>
+          <div>
+            <Recaptcha
+              sitekey="6Lc-ulQiAAAAABhKNCmKmoGU_KlxbzPT0FXWxSBx"
+              render="explicit"
+              verifyCallback={verifyCallback}
+              onloadCallback={load}
+            />
+          </div>
+          <br />
           {!isLoading && (
             <button>{isLogin ? 'Login' : 'Create Account'}</button>
           )}
